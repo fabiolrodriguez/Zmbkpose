@@ -188,7 +188,8 @@ backup_all_accounts_parallel()
 	        STAT=$(ps aux | grep -i curl | grep -v grep| wc -l)
 
 	        if [ $STAT -lt $MAX_PARALLEL_PROCESS ];then
-	                MAILHOST=$(grep -A1 ^$MAIL $LISTALLACCOUNTS| grep -v @)
+			MAILHOST=127.0.0.1
+	                #MAILHOST=$(grep -A1 ^$MAIL $LISTALLACCOUNTS| grep -v @)
 	                $(which ldapsearch) -x -H $LDAPMASTERSERVER -D $LDAPZIMBRADN -w $LDAPZIMBRAPASS -b '' -LLL "(zimbraMailDeliveryAddress=$MAIL)" > $TEMPDIR/$MAIL.ldiff
 	                $(which curl) -k -u $ADMINUSER:$ADMINPASS https://$MAILHOST:7071/home/$MAIL/?fmt=tgz > $TEMPDIR/$MAIL.tgz &
 	                $(which curl) -k -u $ADMINUSER:$ADMINPASS https://$MAILHOST:7071/home/$MAIL/Junk?fmt=tgz > $TEMPDIR/$MAIL.Junk.tgz &
